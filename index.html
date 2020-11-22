@@ -34,48 +34,54 @@
       <button id="add">追加</button>
     </div>
   <script>
-    "use strict"
+    'use strict'
 
     const tasks = [];
 
     function addTask() {
-      document.getElementById("add").addEventListener ("click", () => {
-        const addedTask = document.getElementById("inputTask");
-        tasks.push(addedTask.value);
+      document.getElementById('add').addEventListener ('click', () => {
+        const addedTask = {
+         content: document.getElementById('inputTask'),
+         state: '作業中'
+         }
+                            
+        tasks.push(addedTask);
 
-        const row = document.createElement("tr");
-        const cell = document.createElement("td");
+        const row = document.createElement('tr');
+        const firstCell = document.createElement('td');
         
-        for (let i = 0; i < tasks.length; i++) {
-          cell.textContent = tasks.length-1; 
-          row.appendChild(cell);
-          document.querySelector("tbody").appendChild(row);
-        }
+        tasks.forEach(() => {
+          firstCell.textContent = tasks.length;
+          row.appendChild(firstCell);
+          document.querySelector('tbody').appendChild(row);
+        })
 
-        const cell2 = document.createElement("td");
-        for (let i = 0; i < tasks.length; i++) {
-          cell2.textContent = tasks[i];
-          row.appendChild(cell2);
-          document.querySelector("tbody").appendChild(row);
-        }
+        const secondCell = document.createElement('td');
+       
+        tasks.forEach((task) => {
+          secondCell.textContent = task.content.value;
+          console.log('task.content,value');
+          row.appendChild(secondCell);
+          document.querySelector('tbody').appendChild(row);
+        })
 
-        const cell3 = document.createElement("td");
-        const typeButton = document.createElement("button");
-        typeButton.textContent = "作業中";
-        cell3.appendChild(typeButton);
-        row.appendChild(cell3);
-        document.querySelector("tbody").appendChild(row);
+        const thirdCell = document.createElement('td');
+        const typeButton = document.createElement('button');
+        typeButton.textContent = '作業中';
+        thirdCell.appendChild(typeButton);
+        row.appendChild(thirdCell);
+        document.querySelector('tbody').appendChild(row);
 
-        const cell4 = document.createElement("td");
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "削除";
-        cell4.appendChild(deleteButton);
-        row.appendChild(cell4);
-        document.querySelector("tbody").appendChild(row);
+        const fourthCell = document.createElement('td');
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '削除';
+        fourthCell.appendChild(deleteButton);
+        row.appendChild(fourthCell);
+        document.querySelector('tbody').appendChild(row);
 
         
-        addedTask.value = "";
-        addedTask.focus();
+        addedTask.content.value = '';
+        addedTask.content.focus();
       })
     }
 
