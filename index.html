@@ -7,9 +7,9 @@
   <body>
     <h1>ToDoリスト</h1>
     <div>
-      <label><input type="radio" checked name="type"> 全て</label>
-      <label><input type="radio" name="type"> 作業中</label>
-      <label><input type="radio" name="type"> 完了</label>
+      <label><input type="radio" checked name="status" id="all"> 全て</label>
+      <label><input type="radio" name="status" id="working"> 作業中</label>
+      <label><input type="radio" name="status" id="complete"> 完了</label>
     </div>
 
     <div>
@@ -35,62 +35,70 @@
     </div>
   <script>
     'use strict'
-    let tasks = [];
-
+    const tasks = [];
+    const tbody = document.querySelector('tbody');
+    const inputTask = document.getElementById('inputTask');
+    // 追加機能
+    const addTask = () => {
       document.getElementById('add').addEventListener ('click', () => {
         const addedTask = {
-          content: document.getElementById('inputTask').value,
+          content: inputTask.value,
           state: '作業中'
         }
         tasks.push(addedTask);
         show();
-        document.getElementById('inputTask').value = '';
-        document.getElementById('inputTask').focus();
+        inputTask.value = '';
+        inputTask.focus();
       });
-        
-      const show = () => {
-        const tbody = document.querySelector('tbody');
-        while (tbody.firstChild) {
-              tbody.removeChild(tbody.firstChild);
-            }
-
-        tasks.forEach((task,index) => {
-          const row = document.createElement('tr');
-          tbody.appendChild(row);
-
-          const firstCell = document.createElement('td');
-          firstCell.textContent = index;
-          row.appendChild(firstCell);
-
-          const secondCell = document.createElement('td');
-          secondCell.textContent = task.content;
-          row.appendChild(secondCell);
-       
-
-          const thirdCell = document.createElement('td');
-          const statusButton = document.createElement('button');
-          statusButton.textContent = '作業中';
-          thirdCell.appendChild(statusButton);
-          row.appendChild(thirdCell);
-        
-
-          const fourthCell = document.createElement('td');
-          const deleteButton = document.createElement('button');
-          deleteButton.textContent = '削除';
-          fourthCell.appendChild(deleteButton);
-          row.appendChild(fourthCell);
-          
-          // 削除機能
-          deleteButton.addEventListener('click', () => {
-            while (tbody.firstChild) {
-              tbody.removeChild(tbody.firstChild);
-            }
-            const index = row.rowIndex-1;
-            tasks.splice(index,1);
-            show();
-          })
-        })
+    }  
+    addTask();
+    // 表示機能
+    const show = () => {
+      while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
       }
+      tasks.forEach((task, index) => {
+        const row = document.createElement('tr');
+        tbody.appendChild(row);
+        
+        const firstCell = document.createElement('td');
+        firstCell.textContent = index;
+        row.appendChild(firstCell);
+
+        const secondCell = document.createElement('td');
+        secondCell.textContent = task.content;
+        row.appendChild(secondCell);
+
+        createStatusButton(task, row);
+        createDeleteButton(task, row);
+      });
+    }
+    // 状態管理機能
+    const createStatusButton = (task, row) => {
+      const thirdCell = document.createElement('td');
+      const statusButton = document.createElement('button');
+      statusButton.textContent = task.state
+      thirdCell.appendChild(statusButton);
+      row.appendChild(thirdCell);
+    }
+    // 削除機能
+    const createDeleteButton = (task, row) => {
+      const fourthCell = document.createElement('td');
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = '削除';
+      fourthCell.appendChild(deleteButton);
+      row.appendChild(fourthCell); 
+      deleteTask(deleteButton, row);
+    }
+    const deleteTask = (deleteButton, row) => {
+      deleteButton.addEventListener('click', () => {
+        const index = row.rowIndex-1;
+        tasks.splice(index,1);
+        show();
+      });
+    }
+
+     
     
   </script>
 
