@@ -11,6 +11,7 @@
       <label><input type="radio" name="status" id="working"> 作業中</label>
       <label><input type="radio" name="status" id="complete"> 完了</label>
     </div>
+
     <div>
       <table id="table">
         <thead>
@@ -79,6 +80,18 @@
       statusButton.textContent = task.state
       thirdCell.appendChild(statusButton);
       row.appendChild(thirdCell);
+      changeStatus(task,statusButton);
+    }
+    const changeStatus = (task,statusButton) => {
+      statusButton.addEventListener('click', () => {
+        if (task.state === '作業中') {
+          task.state = '完了';
+          statusButton.textContent = task.state;
+        } else {
+          task.state = '作業中';
+          statusButton.textContent = task.state;
+        }
+      });
     }
     // 削除機能
     const createDeleteButton = (task, row) => {
@@ -96,6 +109,7 @@
         show();
       });
     }
+    
   </script>
   </body>
 </html>
