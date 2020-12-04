@@ -132,9 +132,9 @@
       // 作業中が押された時
       workingButton.addEventListener('click', () => {
         if (workingButton.checked) {
-          while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
-          }
+          // while (tbody.firstChild) {
+          //   tbody.removeChild(tbody.firstChild);
+          // }
           const workingTasks = tasks.filter(task => task.state === '作業中');
           show(workingTasks);
         }       
@@ -142,9 +142,9 @@
       // 完了が押された時
       completeButton.addEventListener('click', () => {
         if (completeButton.checked) {
-          while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
-          }
+        //   while (tbody.firstChild) {
+        //     tbody.removeChild(tbody.firstChild);
+        //   }
           const completeTasks = tasks.filter(task => task.state === '完了');
           show(completeTasks);
         }
