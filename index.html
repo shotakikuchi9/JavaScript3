@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript3</title>
+  </head>
+  <body>
+    <h1>ToDoリスト</h1>
+    <div>
+      <label><input type="radio" checked name="status" id="all"> 全て</label>
+      <label><input type="radio" name="status" id="working"> 作業中</label>
+      <label><input type="radio" name="status" id="complete"> 完了</label>
+    </div>
+
+    <div>
+      <table id="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>コメント</th>
+            <th>状態</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+      </table>
+    </div>
+
+    <h2>新規タスクの追加</h2>
+    <div>
+      <input type="text" name="task" id="inputTask">
+      <button id="add">追加</button>
+    </div>
+  <script>
+    'use strict'
+    const tasks = [];
+    const tbody = document.querySelector('tbody');
+    const inputTask = document.getElementById('inputTask');
+    // 追加機能
+    const addTask = () => {
+      document.getElementById('add').addEventListener ('click', () => {
+        const addedTask = {
+          content: inputTask.value,
+          state: '作業中'
+        }
+        tasks.push(addedTask);
+        show();
+        inputTask.value = '';
+        inputTask.focus();
+      });
+    }  
+    addTask();
+    // 表示機能
+    const show = () => {
+      while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+      }
+      tasks.forEach((task, index) => {
+        const row = document.createElement('tr');
+        tbody.appendChild(row);
+        
+        const firstCell = document.createElement('td');
+        firstCell.textContent = index;
+        row.appendChild(firstCell);
+
+        const secondCell = document.createElement('td');
+        secondCell.textContent = task.content;
+        row.appendChild(secondCell);
+
+        createStatusButton(task, row);
+        createDeleteButton(task, row);
+      });
+    }
+    // 状態管理機能
+    const createStatusButton = (task, row) => {
+      const thirdCell = document.createElement('td');
+      const statusButton = document.createElement('button');
+      statusButton.textContent = task.state
+      thirdCell.appendChild(statusButton);
+      row.appendChild(thirdCell);
+      changeStatus(task,statusButton);
+    }
+    const changeStatus = (task,statusButton) => {
+      statusButton.addEventListener('click', () => {
+        if (task.state === '作業中') {
+          task.state = '完了';
+          statusButton.textContent = task.state;
+        } else {
+          task.state = '作業中';
+          statusButton.textContent = task.state;
+        }
+      });
+    }
+    // 削除機能
+    const createDeleteButton = (task, row) => {
+      const fourthCell = document.createElement('td');
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = '削除';
+      fourthCell.appendChild(deleteButton);
+      row.appendChild(fourthCell); 
+      deleteTask(deleteButton, row);
+    }
+    const deleteTask = (deleteButton, row) => {
+      deleteButton.addEventListener('click', () => {
+        const index = row.rowIndex-1;
+        tasks.splice(index,1);
+        show();
+      });
+    }
+    
+  </script>
+  </body>
+</html>
