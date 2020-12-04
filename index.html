@@ -53,9 +53,6 @@
         if (allButton.checked) {
           show(tasks);
         } else if (workingButton.checked) {
-          while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
-          }
           const workingTasks = tasks.filter(task => task.state === '作業中');
           show(workingTasks);
         } 
