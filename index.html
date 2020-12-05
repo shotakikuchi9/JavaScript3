@@ -114,8 +114,24 @@
     const deleteTask = (deleteButton, row) => {
       deleteButton.addEventListener('click', () => {
         const index = row.rowIndex-1;
-        tasks.splice(index,1);
-        show(tasks);
+        if (allButton.checked) {
+          tasks.splice(index,1);
+          show(tasks);
+        } else if (workingButton.checked) {
+          const workingTasks = tasks.filter(task => task.state === '作業中');
+          const deletedTask = workingTasks[index];
+          const deletedTaskIndex = tasks.indexOf(deletedTask);
+          workingTasks.splice(index,1);
+          tasks.splice(deletedTaskIndex,1);
+          show(workingTasks);
+        } else if (completeButton.checked) {
+          const completeTasks = tasks.filter(task => task.state === '完了');
+          const deletedTask = completeTasks[index];
+          const deletedTaskIndex = tasks.indexOf(deletedTask);
+          completeTasks.splice(index,1);
+          tasks.splice(deletedTaskIndex,1);
+          show(completeTasks);
+        }
       });
     }
     // ラジオボタン実装
