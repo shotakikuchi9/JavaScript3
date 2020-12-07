@@ -128,20 +128,19 @@
           show(tasks);
         } else if (workingButton.checked) {
           const workingTasks = tasks.filter(task => task.state === '作業中');
-          const deletedTask = workingTasks[index];
-          const deletedTaskIndex = tasks.indexOf(deletedTask);
-          workingTasks.splice(index,1);
-          tasks.splice(deletedTaskIndex,1);
-          show(workingTasks);
+          updateTask(workingTasks, index);
         } else if (completeButton.checked) {
           const completeTasks = tasks.filter(task => task.state === '完了');
-          const deletedTask = completeTasks[index];
-          const deletedTaskIndex = tasks.indexOf(deletedTask);
-          completeTasks.splice(index,1);
-          tasks.splice(deletedTaskIndex,1);
-          show(completeTasks);
+          updateTask(completeTasks,index);
         }
       });
+    }
+    const updateTask = (updateTasks, index) => {
+      const deletedTask = updateTasks[index];
+      const deletedTaskIndex = tasks.indexOf(deletedTask);
+      updateTasks.splice(index,1);
+      tasks.splice(deletedTaskIndex,1);
+      show(updateTasks);
     }
     // ラジオボタン実装
     const switchStatus = () => { 
