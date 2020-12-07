@@ -100,6 +100,15 @@
           task.state = '作業中';
           statusButton.textContent = task.state;
         }
+        if (allButton.checked) {
+          show(tasks);
+        } else if (workingButton.checked) {
+          const workingTasks = tasks.filter(task => task.state === '作業中');
+          show(workingTasks);
+        } else if (completeButton.checked) {
+          const completeTasks = tasks.filter(task => task.state === '完了');
+          show(completeTasks);
+        }
       });
     }
     // 削除機能
@@ -135,7 +144,7 @@
       });
     }
     // ラジオボタン実装
-    const switchStatus = () => {
+    const switchStatus = () => { 
       // 全てが押された時
       allButton.addEventListener('click', () => {
         if (allButton.checked) {
