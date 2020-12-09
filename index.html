@@ -38,22 +38,31 @@
     const tasks = [];
     const tbody = document.querySelector('tbody');
     const inputTask = document.getElementById('inputTask');
+    const addButton = document.getElementById('add');
+    const allButton = document.getElementById('all');
+    const workingButton = document.getElementById('working'); 
+    const completeButton = document.getElementById('complete');
     // 追加機能
     const addTask = () => {
-      document.getElementById('add').addEventListener ('click', () => {
+      addButton.addEventListener ('click', () => {
         const addedTask = {
           content: inputTask.value,
           state: '作業中'
         }
         tasks.push(addedTask);
-        show();
+        if (allButton.checked) {
+          show(tasks);
+        } else if (workingButton.checked) {
+          const workingTasks = tasks.filter(task => task.state === '作業中');
+          show(workingTasks);
+        } 
         inputTask.value = '';
         inputTask.focus();
       });
     }  
     addTask();
     // 表示機能
-    const show = () => {
+    const show = (tasks) => {
       while (tbody.firstChild) {
         tbody.removeChild(tbody.firstChild);
       }
@@ -91,6 +100,15 @@
           task.state = '作業中';
           statusButton.textContent = task.state;
         }
+        if (allButton.checked) {
+          show(tasks);
+        } else if (workingButton.checked) {
+          const workingTasks = tasks.filter(task => task.state === '作業中');
+          show(workingTasks);
+        } else if (completeButton.checked) {
+          const completeTasks = tasks.filter(task => task.state === '完了');
+          show(completeTasks);
+        }
       });
     }
     // 削除機能
@@ -105,11 +123,49 @@
     const deleteTask = (deleteButton, row) => {
       deleteButton.addEventListener('click', () => {
         const index = row.rowIndex-1;
-        tasks.splice(index,1);
-        show();
+        if (allButton.checked) {
+          tasks.splice(index,1);
+          show(tasks);
+        } else if (workingButton.checked) {
+          const workingTasks = tasks.filter(task => task.state === '作業中');
+          updateTask(workingTasks, index);
+        } else if (completeButton.checked) {
+          const completeTasks = tasks.filter(task => task.state === '完了');
+          updateTask(completeTasks, index);
+        }
       });
     }
-    
+    const updateTask = (updateTasks, index) => {
+      const deletedTask = updateTasks[index];
+      const deletedTaskIndex = tasks.indexOf(deletedTask);
+      updateTasks.splice(index,1);
+      tasks.splice(deletedTaskIndex,1);
+      show(updateTasks);
+    }
+    // ラジオボタン実装
+    const switchStatus = () => { 
+      // 全てが押された時
+      allButton.addEventListener('click', () => {
+        if (allButton.checked) {
+          show(tasks);
+        }       
+      })
+      // 作業中が押された時
+      workingButton.addEventListener('click', () => {
+        if (workingButton.checked) {
+          const workingTasks = tasks.filter(task => task.state === '作業中');
+          show(workingTasks);
+        }       
+      })
+      // 完了が押された時
+      completeButton.addEventListener('click', () => {
+        if (completeButton.checked) {
+          const completeTasks = tasks.filter(task => task.state === '完了');
+          show(completeTasks);
+        }
+      })
+    }
+    switchStatus();
   </script>
   </body>
 </html>
